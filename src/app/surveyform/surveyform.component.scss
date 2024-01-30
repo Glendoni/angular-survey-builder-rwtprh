@@ -1,0 +1,256 @@
+$FONT_SIZE: 1em;
+$PRIMARY: #212121;
+$SECONDARY: white;
+$BORDER_COLOR: #9e9e9e;
+$DISABLED_COLOR: #A9ABBB;
+
+$SUCCESS: #1b5e20;
+$ERROR: #b71c1c;
+
+input[type="text"], button, .input-radio, .input-checkbox {
+  font-size: $FONT_SIZE;
+  font-weight: 600;
+
+  padding: 16px;
+  margin: 10px;
+  border-radius: 4px;
+}
+
+.invalid > h2 {
+  color: $ERROR;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: $PRIMARY;
+  font-size: $FONT_SIZE;
+  font-weight: 600;
+
+  .survey-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2 {
+
+    }
+
+    .survey-process {
+      display: flex;
+    }
+  }
+
+  .survey-content {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+
+    .survey-question,
+    .survey-submit {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .survey-submit > .survey-submit-resume {
+      cursor: pointer;
+      padding: 8px;
+      &.VALID {
+        color: $SUCCESS;
+      }
+      &.INVALID {
+        color: $ERROR;
+      }
+    }
+  } 
+}
+
+.process-step {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  margin: 4px;
+  cursor: pointer;
+  border: 2px solid $BORDER_COLOR;
+  border-radius: 50%;
+  color: $SECONDARY;
+  font-size: 12px;
+  line-height: 16px;
+  transition: background .4s ease, border-color .4s ease, border-radius .4s ease;
+  
+  &.touched {
+    &.INVALID {
+      background-color: $ERROR;
+      border-color: $ERROR;
+      &::after {
+        content: '\002716';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+    &.VALID {
+      background-color: $SUCCESS;
+      border-color: $SUCCESS;
+      &::after {
+        content: '\002714';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  }
+  &.active {
+    border-radius: 0;
+  }
+}
+
+input[type="text"] {
+  background: $SECONDARY;
+  border: 1px solid $PRIMARY;
+  color: inherit;
+
+  transition: border .4s ease, margin .4s ease;
+
+  &:focus, &.ng-touched {
+    outline: none;
+    border-width: 2px;
+    margin: 8px;
+  }
+  &.ng-invalid.ng-touched {
+    border-color: $ERROR;
+  }
+}
+
+.input-radio,
+.input-checkbox {
+  position: relative;
+  border: 1px solid $PRIMARY;
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  opacity: .4;
+
+  transition: opacity .2s ease, background .4s ease, border .4s ease, margin .4s ease;
+
+  &.active {
+    opacity: 1;
+    margin: 8px;
+    border-width: 2px;
+    background: $SECONDARY;
+  }
+
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  img {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+}
+.input-checkbox {
+  padding: 32px 16px 16px 16px;
+
+  .check-icon {
+    content: '';
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    line-height: 24px;
+    background-color: $BORDER_COLOR;
+    color: $SECONDARY;
+    border-radius: 4px;
+
+    transition: background .4s ease;
+
+    &:after {
+      content: '\002714';
+      padding-left: 5px;
+    }
+  }
+
+  &.active > .check-icon {
+    background-color: $PRIMARY;
+  }
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+
+  &.f-column {
+    flex-direction: column;
+  }
+  &.f-space-between {
+    justify-content: space-between;
+  }
+  &.f-align-center {
+    align-items: center;
+  }
+  &.f-wrap {
+    flex-wrap: wrap;
+  }
+}
+
+.yscroll {
+  overflow-y: overlay;
+}
+
+.survey-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.button-icon {
+  color: $SECONDARY;
+  background-color: $PRIMARY;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: color .4s ease, background .4s ease;
+
+  :first-child {
+    &.icon {
+      margin-right: 16px;
+    } 
+  }
+  :last-child {
+    &.icon {
+      margin-left: 16px;
+    } 
+  }
+
+  &:disabled {
+    background-color: $DISABLED_COLOR;
+    cursor: not-allowed;
+  }
+
+  &.previous {
+    color:inherit;
+    background: none;
+    &:disabled {
+      color: $DISABLED_COLOR;
+    }
+  }
+}

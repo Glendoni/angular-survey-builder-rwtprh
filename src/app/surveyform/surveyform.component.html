@@ -1,0 +1,59 @@
+<form [formGroup]="fg" (ngSubmit)="onSubmit()">
+	<div class="survey-header">
+		<h1>{{ _data.label }}</h1>
+		<div class="survey-process">
+			<div *ngFor="let q of _data.questions; index as i" class="process-step" [ngClass]="fg.controls[q.name].status" [class.touched]="fg.controls[q.name].touched"
+			 [class.active]="i === active" (click)="setActive(i)"></div>
+		</div>
+	</div>
+
+	<div class="survey-content">
+		<div [@openClose]="i === active ? 'open' : 'closed'" class="survey-question" *ngFor="let q of _data.questions; index as i"
+		 [class.active]="q.name === active" [class.invalid]="fg.controls[q.name].touched && fg.controls[q.name].status === 'INVALID'">
+			<h2>{{ q.label }} {{ q.required ? '*' : '' }}</h2>
+
+			<ng-container [ngSwitch]="q.type">
+				<!-- INPUT PASSWORD-->
+				<ng-container *ngSwitchCase="'text'">
+					<input [formControlName]="q.name" type="text">
+        </ng-container>
+
+        <!-- RADIO -->
+        <div *ngSwitchCase="'radio'" class="flex f-wrap yscroll">
+          <div *ngFor="let option of q.options" class="input-radio" [class.active]="fg.controls[q.name].value === option.value">
+            <img *ngIf="option.icon" [src]="option.icon" alt="">
+            <div>{{ option.label }}</div>
+            <input [formControlName]="q.name" type="radio" [value]="option.value">
+          </div>
+        </div>
+
+        <!-- CHECKBOX -->
+        <div *ngSwitchCase="'checkbox'" [formArrayName]="q.name" class="flex f-wrap yscroll">
+          <div *ngFor="let option of q.options; index as o" class="input-checkbox" [class.active]="fg.controls[q.name].controls[o].value">
+            <img *ngIf="option.icon" [src]="option.icon" alt="">
+            <div>{{ option.label }}</div>
+            <div class="check-icon"></div>
+            <input [formControlName]="o" type="checkbox" [value]="option.value">
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+
+    <div [@openClose]="_data.questions.length === active ? 'open' : 'closed'" class="survey-submit" [class.active]="_data.questions.length === active">
+
+      <div *ngFor="let q of _data.questions; index as i" class="survey-submit-resume flex f-align-center" [ngClass]="fg.controls[q.name].status" (click)="setActive(i)">
+        <div class="process-step touched" [ngClass]="fg.controls[q.name].status"></div>
+        <div>{{ q.label }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="survey-actions">
+    <button type="button" class="button-icon previous" [disabled]="active <= 0" (click)="setActive(active - 1)"><div class="icon">←</div><span>Previous</span></button>
+
+    <button *ngIf="active < _data.questions.length" type="button" class="button-icon" [disabled]="fg.controls[_data.questions[active].name].status === 'INVALID'" (click)="setActive(active + 1)"><span>Next</span><div class="icon">→</div></button>
+
+    <button *ngIf="active >= _data.questions.length" class="button-icon" type="submit" [disabled]="!fg.valid"><span>SUBMIT</span><div class="icon">→</div></button>
+  </div>
+</form>
